@@ -1,5 +1,9 @@
 # opinion-ate
 
+# An app for tracking reviews of dishes at different restaurants.
+
+# Production: <https://kerli-vue-testing.netlify.app/>
+
 ## Project setup
 ```
 yarn install
