@@ -3,7 +3,7 @@ import {mount, createLocalVue} from '@vue/test-utils';
 import RestaurantList from '@/components/RestaurantList';
 
 const findByTestId = (wrapper, testId, index) =>
-  wrapper.findAll(`[data-testid="${testId}"]`).at(index);
+    wrapper.findAll(`[data-testid="${testId}"]`).at(index);
 
 describe('RestaurantList', () => {
     const records = [
