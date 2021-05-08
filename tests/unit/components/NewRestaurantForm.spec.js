@@ -9,6 +9,7 @@ Vue.use(Vuetify);
 describe('NewRestaurantForm', () => {
   const restaurantName = 'Sushi Place';
 
+  const vuetify = new Vuetify();
   const localVue = createLocalVue();
   localVue.use(Vuex);
 
@@ -33,6 +34,7 @@ describe('NewRestaurantForm', () => {
     wrapper = mount(NewRestaurantForm, {
       localVue,
       store,
+      vuetify,
       attachTo: div,
     });
   });
@@ -41,7 +43,15 @@ describe('NewRestaurantForm', () => {
     wrapper.destroy();
   });
 
-  
+
+  describe('initially', () => {
+    it('does not display a validation error', () => {
+      expect(
+        wrapper.find('[data-testid="new-restaurant-name-error"]').exists(),
+      ).toBe(false);
+    });
+  });
+
   describe('when filled in', () => {
     beforeEach(() => {
       wrapper
@@ -57,6 +67,58 @@ describe('NewRestaurantForm', () => {
         expect.anything(),
         restaurantName,
       );
+    });
+
+    it('clears the name', () => {
+        expect(
+            wrapper.find('[data-testid="new-restaurant-name-field"]').element.value,
+        ).toEqual('');
+    });
+
+    it('does not display a validation error', () => {
+        expect(
+          wrapper.find('[data-testid="new-restaurant-name-error"]').exists(),
+        ).toBe(false);
+      });
+  });
+
+  describe('when empty', () => {
+    beforeEach(() => {
+      wrapper.find('[data-testid="new-restaurant-name-field"]').setValue('');
+      wrapper
+        .find('[data-testid="new-restaurant-submit-button"]')
+        .trigger('click');
+    });
+  
+    it('displays a validation error', () => {
+      expect(
+        wrapper.find('[data-testid="new-restaurant-name-error"]').text(),
+      ).toContain('Name is required');
+    });   
+    
+    it('does not dispatch the create action', () => {
+        expect(restaurantsModule.actions.create).not.toHaveBeenCalled();
+      });
+  });
+
+  describe('when correcting a validation error', () => {
+    beforeEach(() => {
+      wrapper.find('[data-testid="new-restaurant-name-field"]').setValue('');
+      wrapper
+        .find('[data-testid="new-restaurant-submit-button"]')
+        .trigger('click');
+      wrapper
+        .find('[data-testid="new-restaurant-name-field"]')
+        .setValue(restaurantName);
+      wrapper
+        .find('[data-testid="new-restaurant-submit-button"]')
+        .trigger('click');
+    });
+  
+    it('clears the validation error', () => {
+      expect(
+        wrapper.find('[data-testid="new-restaurant-name-error"]').exists(),
+      ).toBe(false);
     });
   });
 
