@@ -13,7 +13,6 @@ import NewRestaurantForm from '@/components/NewRestaurantForm';
 import RestaurantList from '@/components/RestaurantList';
 export default {
   name: 'RestaurantScreen',
-  components: {RestaurantList},
   components: {NewRestaurantForm, RestaurantList},
 };
 </script>
